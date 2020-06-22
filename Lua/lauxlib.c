@@ -136,8 +136,7 @@ static int lastlevel(lua_State *L)
   return le - 1;
 }
 
-LUALIB_API void luaL_traceback(lua_State *L, lua_State *L1,
-                               const char *msg, int level)
+LUALIB_API void luaL_traceback(lua_State *L, lua_State *L1, const char *msg, int level)
 {
   luaL_Buffer b;
   lua_Debug ar;
@@ -788,8 +787,7 @@ static int skipcomment(LoadF *lf, int *cp)
     return 0; /* no comment */
 }
 
-LUALIB_API int luaL_loadfilex(lua_State *L, const char *filename,
-                              const char *mode)
+LUALIB_API int luaL_loadfilex(lua_State *L, const char *filename, const char *mode)
 {
   LoadF lf;
   int status, readstatus;
@@ -848,8 +846,7 @@ static const char *getS(lua_State *L, void *ud, size_t *size)
   return ls->s;
 }
 
-LUALIB_API int luaL_loadbufferx(lua_State *L, const char *buff, size_t size,
-                                const char *name, const char *mode)
+LUALIB_API int luaL_loadbufferx(lua_State *L, const char *buff, size_t size, const char *name, const char *mode)
 {
   LoadS ls;
   ls.s = buff;
@@ -859,7 +856,7 @@ LUALIB_API int luaL_loadbufferx(lua_State *L, const char *buff, size_t size,
 
 LUALIB_API int luaL_loadstring(lua_State *L, const char *s)
 {
-  return luaL_loadbuffer(L, s, strlen(s), s);
+  return luaL_loadbufferx(L, s, strlen(s), s, NULL);
 }
 
 /* }====================================================== */
@@ -867,7 +864,9 @@ LUALIB_API int luaL_loadstring(lua_State *L, const char *s)
 LUALIB_API int luaL_getmetafield(lua_State *L, int obj, const char *event)
 {
   if (!lua_getmetatable(L, obj)) /* no metatable? */
+  {
     return LUA_TNIL;
+  }
   else
   {
     int tt;
@@ -884,8 +883,8 @@ LUALIB_API int luaL_getmetafield(lua_State *L, int obj, const char *event)
 LUALIB_API int luaL_callmeta(lua_State *L, int obj, const char *event)
 {
   obj = lua_absindex(L, obj);
-  if (luaL_getmetafield(L, obj, event) == LUA_TNIL) /* no metafield? */
-    return 0;
+  if (luaL_getmetafield(L, obj, event) == LUA_TNIL)
+    return 0; /* no metafield? */
   lua_pushvalue(L, obj);
   lua_call(L, 1, 1);
   return 1;
@@ -996,8 +995,7 @@ LUALIB_API int luaL_getsubtable(lua_State *L, int idx, const char *fname)
 ** if 'glb' is true, also registers the result in the global table.
 ** Leaves resulting module on the top.
 */
-LUALIB_API void luaL_requiref(lua_State *L, const char *modname,
-                              lua_CFunction openf, int glb)
+LUALIB_API void luaL_requiref(lua_State *L, const char *modname, lua_CFunction openf, int glb)
 {
   luaL_getsubtable(L, LUA_REGISTRYINDEX, LUA_LOADED_TABLE);
   lua_getfield(L, -1, modname); /* LOADED[modname] */
@@ -1018,8 +1016,7 @@ LUALIB_API void luaL_requiref(lua_State *L, const char *modname,
   }
 }
 
-LUALIB_API void luaL_addgsub(luaL_Buffer *b, const char *s,
-                             const char *p, const char *r)
+LUALIB_API void luaL_addgsub(luaL_Buffer *b, const char *s, const char *p, const char *r)
 {
   const char *wild;
   size_t l = strlen(p);
@@ -1032,8 +1029,7 @@ LUALIB_API void luaL_addgsub(luaL_Buffer *b, const char *s,
   luaL_addstring(b, s); /* push last suffix */
 }
 
-LUALIB_API const char *luaL_gsub(lua_State *L, const char *s,
-                                 const char *p, const char *r)
+LUALIB_API const char *luaL_gsub(lua_State *L, const char *s, const char *p, const char *r)
 {
   luaL_Buffer b;
   luaL_buffinit(L, &b);
@@ -1060,8 +1056,7 @@ static int panic(lua_State *L)
   const char *msg = lua_tostring(L, -1);
   if (msg == NULL)
     msg = "error object is not a string";
-  lua_writestringerror("PANIC: unprotected error in call to Lua API (%s)\n",
-                       msg);
+  lua_writestringerror("PANIC: unprotected error in call to Lua API (%s)\n", msg);
   return 0; /* return to Lua to abort */
 }
 
@@ -1088,7 +1083,9 @@ static void warnf(void *ud, const char *message, int tocont)
     lua_writestringerror("%s", "Lua warning: "); /* start a new warning */
   lua_writestringerror("%s", message);           /* write message */
   if (tocont)                                    /* not the last part? */
-    *warnstate = 2;                              /* to be continued */
+  {
+    *warnstate = 2; /* to be continued */
+  }
   else
   {                                   /* last part */
     lua_writestringerror("%s", "\n"); /* finish message with end-of-line */
@@ -1117,8 +1114,7 @@ LUALIB_API void luaL_checkversion_(lua_State *L, lua_Number ver, size_t sz)
   if (sz != LUAL_NUMSIZES) /* check numeric types */
     luaL_error(L, "core and library have incompatible numeric types");
   else if (v != ver)
-    luaL_error(L, "version mismatch: app. needs %f, Lua core provides %f",
-               (LUAI_UACNUMBER)ver, (LUAI_UACNUMBER)v);
+    luaL_error(L, "version mismatch: app. needs %f, Lua core provides %f", (LUAI_UACNUMBER)ver, (LUAI_UACNUMBER)v);
 }
 /*
 void lua_writestring(const char *s,size_t l)

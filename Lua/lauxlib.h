@@ -150,9 +150,6 @@ LUALIB_API void (luaL_requiref) (lua_State *L, const char *modname,
 
 #define luaL_opt(L,f,n,d)	(lua_isnoneornil(L,(n)) ? (d) : f(L,(n)))
 
-#define luaL_loadbuffer(L,s,sz,n)	luaL_loadbufferx(L,s,sz,n,NULL)
-
-
 /* push the value used to represent failure/error */
 #define luaL_pushfail(L)	lua_pushnil(L)
 
@@ -245,10 +242,11 @@ void lua_writestring(const char *s,size_t l);
 #define lua_writeline()        (lua_writestring("\n", 1), fflush(stdout))
 #endif
 
+void lua_writestringerror(const char *s, const char *p);
+        //;(fprintf(stderr, (s), (p)), fflush(stderr))
 /* print an error message */
-#if !defined(lua_writestringerror)
-#define lua_writestringerror(s,p) \
-        (fprintf(stderr, (s), (p)), fflush(stderr))
+#ifndef lua_writestringerror_flag
+#define lua_writestringerror_flag
 #endif
 
 /* }================================================================== */

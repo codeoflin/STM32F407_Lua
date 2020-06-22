@@ -58,6 +58,7 @@ Src/system_stm32f4xx.c \
 Lua/lapi.c \
 Lua/lauxlib.c \
 Lua/lbaselib.c \
+Lua/loslib.c \
 Lua/lcode.c \
 Lua/lcorolib.c \
 Lua/lctype.c \
@@ -81,7 +82,6 @@ Lua/lstring.c \
 Lua/lstrlib.c \
 Lua/ltable.c \
 Lua/ltablib.c \
-Lua/ltests.c \
 Lua/ltm.c \
 Lua/lundump.c \
 Lua/lutf8lib.c \

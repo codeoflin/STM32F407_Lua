@@ -78,8 +78,7 @@ static const char *b_str2int(const char *s, int base, lua_Integer *pn)
     return NULL;
   do
   {
-    int digit = (isdigit((unsigned char)*s)) ? *s - '0'
-                                             : (toupper((unsigned char)*s) - 'A') + 10;
+    int digit = (isdigit((unsigned char)*s)) ? *s - '0' : (toupper((unsigned char)*s) - 'A') + 10;
     if (digit >= base)
       return NULL; /* invalid numeral */
     n = n * base + digit;

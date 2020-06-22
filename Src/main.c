@@ -65,7 +65,7 @@ static void MX_SDIO_SD_Init(void);
 /* 测试的Lua代码字符 */
 
 const char lua_test[] = {
-    "print(\"Hello,I am lua!\\n--this is newline printf\")\n"
+    "print(string.format(\"Hello,I am lua! %d \",12345678),-172259743)\n"
     "function foo()\n"
     "  local i = 0\n"
     "  local sum = 1\n"
@@ -75,9 +75,9 @@ const char lua_test[] = {
     "  end\n"
     "return sum\n"
     "end\n"
-    "print(\"sum =\", foo())\n"
-    "print(\"and sum = 2^11 =\", 2 ^ 11)\n"
-    "print(\"exp(200) =\", math.exp(200))\n"};
+    "-- print(\"sum =\", foo())\n"
+    "-- print(\"and sum = 2^11 =\", 2 ^ 11)\n"
+    "-- print(\"exp(200) =\", math.exp(200))\n"};
 // */
 
 void lua_writestring(const char *str, size_t l)
@@ -85,6 +85,13 @@ void lua_writestring(const char *str, size_t l)
   if(l==0)l=strlen(str);
   HAL_UART_Transmit(&huart1, str, l, 1000);
 }
+
+void lua_writestringerror(const char *s, const char *p)
+{
+  //if(l==0)l=strlen(str);
+  HAL_UART_Transmit(&huart1, p, strlen(p), 1000);
+}
+
 
 /* USER CODE END 0 */
 
@@ -147,6 +154,9 @@ int main(void)
   L = luaL_newstate();
   luaL_openlibs(L);
   luaopen_base(L);
+  luaL_loadstring(L, lua_test);
+  lua_pcallk(L, (0), (LUA_MULTRET), (0), 0, NULL);
+  lua_close(L);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -155,10 +165,9 @@ int main(void)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
-    luaL_dostring(L, buffer);
+    
     // */
   }
-  lua_close(L);
   /* USER CODE END 3 */
 }
 

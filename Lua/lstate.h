@@ -282,13 +282,13 @@ struct lua_State {
   CommonHeader;
   lu_byte status;
   lu_byte allowhook;
-  unsigned short nci;  /* number of items in 'ci' list */
+  unsigned short nci;  /* 'ci'列表里的元素数量 */
   StkId top;  /* first free slot in the stack */
   global_State *l_G;
-  CallInfo *ci;  /* call info for current function */
+  CallInfo *ci;  /* 当前函数的调用信息 */
   const Instruction *oldpc;  /* last pc traced */
   StkId stack_last;  /* last free slot in the stack */
-  StkId stack;  /* stack base */
+  StkId stack;  /* 栈基址 */
   UpVal *openupval;  /* list of open upvalues in this stack */
   GCObject *gclist;
   struct lua_State *twups;  /* list of threads with open upvalues */
