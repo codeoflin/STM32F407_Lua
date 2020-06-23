@@ -1283,8 +1283,10 @@ LUA_API int lua_next(lua_State *L, int idx)
   {
     api_incr_top(L);
   }
-  else           /* no more elements */
+  else /* no more elements */
+  {
     L->top -= 1; /* remove key */
+  }
   lua_unlock(L);
   return more;
 }
@@ -1379,8 +1381,7 @@ LUA_API void *lua_newuserdatauv(lua_State *L, size_t size, int nuvalue)
   return getudatamem(u);
 }
 
-static const char *aux_upvalue(TValue *fi, int n, TValue **val,
-                               GCObject **owner)
+static const char *aux_upvalue(TValue *fi, int n, TValue **val, GCObject **owner)
 {
   switch (ttypetag(fi))
   {
@@ -1482,8 +1483,7 @@ LUA_API void *lua_upvalueid(lua_State *L, int fidx, int n)
   }
 }
 
-LUA_API void lua_upvaluejoin(lua_State *L, int fidx1, int n1,
-                             int fidx2, int n2)
+LUA_API void lua_upvaluejoin(lua_State *L, int fidx1, int n1, int fidx2, int n2)
 {
   LClosure *f1;
   UpVal **up1 = getupvalref(L, fidx1, n1, &f1);
@@ -1491,5 +1491,98 @@ LUA_API void lua_upvaluejoin(lua_State *L, int fidx1, int n1,
   *up1 = *up2;
   luaC_objbarrier(L, f1, *up1);
 }
+/*
+int Long2Str(char *buff, int bufflen, long long num)
+{
+  int val = num;
+  int len = 0;
+  if (val < 0)
+  {
+    buff[0] = '-';
+    len = 1;
+  }
+  for (; val != 0; val /= 10)
+  {
+    buff[len] = (abs(val) % 10) + 0x30;
+    len++;
+  }
+  if (len == 0)
+  {
+    buff[0] = '0';
+    len = 1;
+  }
+  buff[len] = 0;
+  int half = len % 2 == 0 ? len / 2 : (len - 1) / 2;
+  int s = buff[0] != '-';
+  for (int i = 0; i < half; i++)
+  {
+    char tmp = buff[s ? i : i + 1];
+    buff[s ? i : i + 1] = buff[len - 1 - i];
+    buff[len - 1 - i] = tmp;
+  }
+  return len;
+}
+// */
 
+static const char table[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+/*
+** 双精度浮点转字符串
+*/
+int Double2Str(char *str, double number, unsigned char g, unsigned char l)
+{
+  unsigned char i;
+  double t2 = 0.0;
+  int sig=number>=0;
+  if(!sig)
+  {
+    number=number-(number*2);
+    str[0]='-';
+    str++;
+  }
+
+  //如果整数部分长度为255则自动计算
+  if(g==0xff)
+  {
+    long long bit=1;
+    for(g=1;number/bit>=10;g++)bit*=10;
+  }
+  //如果小数部分长度为255则自动计算
+  if(l==0xff)
+  {
+    int bit=1;
+    for(l=0;(number*bit)-(long long)(number*bit)!=0;l++)bit*=10;
+  }
+  int temp = number;
+  for (i = 1; i <= g; i++)
+  {
+    str[g - i] = table[temp % 10];
+    temp = temp / 10;
+  }
+  
+  if(l==0)
+  {
+      *(str + g) = '\0';
+      if(!sig)
+      {
+        str--;
+      }
+      return strlen(str);
+  }
+  *(str + g) = '.';
+  temp = 0;
+  t2 = number;
+  for (i = 1; i <= l; i++)
+  {
+    temp = t2 * 10;
+    str[g + i] = table[temp % 10];
+    t2 = t2 * 10;
+  }
+  *(str + g + l + 1) = '\0';
+  if(!sig)
+  {
+    str--;
+  }
+  return strlen(str);
+}
 #endif

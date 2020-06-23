@@ -65,7 +65,7 @@ static void MX_SDIO_SD_Init(void);
 /* 测试的Lua代码字符 */
 
 const char lua_test[] = {
-    "print(string.format(\"Hello,I am lua! %d \",12345678),-172259743)\n"
+    "print(string.format(\"Test %d %d %d %f %f %f Test\",12,0,-34,12.25,0.0,-56.50))\n"
     "function foo()\n"
     "  local i = 0\n"
     "  local sum = 1\n"
@@ -75,9 +75,9 @@ const char lua_test[] = {
     "  end\n"
     "return sum\n"
     "end\n"
-    "-- print(\"sum =\", foo())\n"
-    "-- print(\"and sum = 2^11 =\", 2 ^ 11)\n"
-    "-- print(\"exp(200) =\", math.exp(200))\n"};
+    "print(\"sum = \", foo())\n"
+    "print(\" and sum = 2^11 =\", 2 ^ 11)\n"
+    "print(\" exp(200) =\", math.exp(200))\n"};
 // */
 
 void lua_writestring(const char *str, size_t l)

@@ -426,37 +426,16 @@ static int tostringbuff(TValue *obj, char *buff)
   if (ttisinteger(obj))
   {
     int val = (LUAI_UACINT)(ivalue(obj));
-    if(val<0)
-    {
-      buff[0] = '-';
-      len = 1;
-    }
-    for (; val != 0; val /= 10)
-    {
-      buff[len] = (abs(val) % 10) + 0x30;
-      len++;
-    }
-    if (len == 0)
-    {
-      buff[0] = '0';
-      len = 1;
-    }
-    buff[len] = 0;
-    int half = len % 2 == 0 ? len / 2 : (len - 1) / 2;
-    int s=buff[0]!='-';
-    for(int i=0;i<half;i++)
-    {
-      char tmp=buff[s?i:i+1];
-      buff[s?i:i+1]=buff[len-1-i];
-      buff[len-1-i]=tmp;
-    }
+    //len=LongToStr(buff,MAXNUMBER2STR,val);
+    len=sprintf(buff,"%d",val);
     //LUA_INTEGER_FMT
     //(void)(MAXNUMBER2STR),
     //sprintf((buff),LUA_INTEGER_FMT,(LUAI_UACINT)(ivalue(obj)))
   }
   else
   {
-    len = lua_number2str(buff, MAXNUMBER2STR, fltvalue(obj));
+    //len = lua_number2str(buff, MAXNUMBER2STR, fltvalue(obj));
+    len = Double2Str(buff, fltvalue(obj),0xff,0xff);
     if (buff[strspn(buff, "-0123456789")] == '\0')
     { /* looks like an int? */
       buff[len++] = lua_getlocaledecpoint();

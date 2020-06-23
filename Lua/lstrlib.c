@@ -1166,9 +1166,7 @@ static void addliteral (lua_State *L, luaL_Buffer *b, int arg) {
         nb = quotefloat(L, buff, lua_tonumber(L, arg));
       else {  /* integers */
         lua_Integer n = lua_tointeger(L, arg);
-        const char *format = (n == LUA_MININTEGER)  /* corner case? */
-                           ? "0x%" LUA_INTEGER_FRMLEN "x"  /* use hex */
-                           : LUA_INTEGER_FMT;  /* else use default format */
+        const char *format = (n == LUA_MININTEGER) ? "0x%x": "%d";
         nb = l_sprintf(buff, MAX_ITEM, format, (LUAI_UACINT)n);
       }
       luaL_addsize(b, nb);
@@ -1207,20 +1205,6 @@ static const char *scanformat (lua_State *L, const char *strfrmt, char *form) {
   return p;
 }
 
-
-/*
-** add length modifier into formats
-*/
-static void addlenmod (char *form, const char *lenmod) {
-  size_t l = strlen(form);
-  size_t lm = strlen(lenmod);
-  char spec = form[l - 1];
-  strcpy(form + l - 1, lenmod);
-  form[l + lm - 1] = spec;
-  form[l + lm] = '\0';
-}
-
-
 static int str_format (lua_State *L) {
   int top = lua_gettop(L);
   int arg = 1;
@@ -1250,14 +1234,12 @@ static int str_format (lua_State *L) {
         case 'd': case 'i':
         case 'o': case 'u': case 'x': case 'X': {
           lua_Integer n = luaL_checkinteger(L, arg);
-          addlenmod(form, LUA_INTEGER_FRMLEN);
-          nb = l_sprintf(buff, maxitem, form, (LUAI_UACINT)n);
+          nb = sprintf(buff, form, (LUAI_UACINT)n);
+          buff=buff;
           break;
         }
         case 'a': case 'A':
-          addlenmod(form, LUA_NUMBER_FRMLEN);
-          nb = lua_number2strx(L, buff, maxitem, form,
-                                  luaL_checknumber(L, arg));
+          nb = lua_number2strx(L, buff, maxitem, form, luaL_checknumber(L, arg));
           break;
         case 'f':
           maxitem = MAX_ITEMF;  /* extra space for '%f' */
@@ -1265,8 +1247,8 @@ static int str_format (lua_State *L) {
           /* FALLTHROUGH */
         case 'e': case 'E': case 'g': case 'G': {
           lua_Number n = luaL_checknumber(L, arg);
-          addlenmod(form, LUA_NUMBER_FRMLEN);
-          nb = l_sprintf(buff, maxitem, form, (LUAI_UACNUMBER)n);
+          float dat=(LUAI_UACNUMBER)n;
+          nb = Double2Str(buff, dat,0xff,0xff);
           break;
         }
         case 'p': {

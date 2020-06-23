@@ -19,8 +19,7 @@
 #include "lualib.h"
 
 /*
-** The hook table at registry[HOOKKEY] maps threads to their current
-** hook function.
+** The hook table at registry[HOOKKEY] maps threads to their current hook function.
 */
 static const char *const HOOKKEY = "_HOOKKEY";
 

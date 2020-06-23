@@ -413,8 +413,7 @@
 
 #define l_floor(x)		(l_mathop(floor)(x))
 
-#define lua_number2str(s,sz,n)  \
-	l_sprintf((s), sz, LUA_NUMBER_FMT, (LUAI_UACNUMBER)(n))
+#define lua_number2str(s,sz,n) l_sprintf((s), sz, LUA_NUMBER_FMT, (LUAI_UACNUMBER)(n))
 
 /*
 @@ lua_numbertointeger converts a float number with an integral value
@@ -506,12 +505,9 @@
 
 /* The following definitions are good for most cases here */
 
-#define LUA_INTEGER_FMT		"%" LUA_INTEGER_FRMLEN "d"
-
 #define LUAI_UACINT		LUA_INTEGER
 
-#define lua_integer2str(s,sz,n)  \
-	l_sprintf((s), sz, LUA_INTEGER_FMT, (LUAI_UACINT)(n))
+#define lua_integer2str(s,sz,n)  l_sprintf((s), sz, LUA_INTEGER_FMT, (LUAI_UACINT)(n))
 
 /*
 ** use LUAI_UACINT here to avoid problems with promotions (which
@@ -527,23 +523,8 @@
 
 #if LUA_INT_TYPE == LUA_INT_INT		/* { int */
 
-#define LUA_INTEGER		int
-#define LUA_INTEGER_FRMLEN	""
-
-#define LUA_MAXINTEGER		INT_MAX
-#define LUA_MININTEGER		INT_MIN
-
-#define LUA_MAXUNSIGNED		UINT_MAX
-
 #elif LUA_INT_TYPE == LUA_INT_LONG	/* }{ long */
 
-#define LUA_INTEGER		long
-#define LUA_INTEGER_FRMLEN	"l"
-
-#define LUA_MAXINTEGER		LONG_MAX
-#define LUA_MININTEGER		LONG_MIN
-
-#define LUA_MAXUNSIGNED		ULONG_MAX
 
 #elif LUA_INT_TYPE == LUA_INT_LONGLONG	/* }{ long long */
 
@@ -552,7 +533,7 @@
 /* use ISO C99 stuff */
 
 #define LUA_INTEGER		long long
-#define LUA_INTEGER_FRMLEN	"ll"
+
 
 #define LUA_MAXINTEGER		LLONG_MAX
 #define LUA_MININTEGER		LLONG_MIN
@@ -561,14 +542,6 @@
 
 #elif defined(LUA_USE_WINDOWS) /* }{ */
 /* in Windows, can use specific Windows types */
-
-#define LUA_INTEGER		__int64
-#define LUA_INTEGER_FRMLEN	"I64"
-
-#define LUA_MAXINTEGER		_I64_MAX
-#define LUA_MININTEGER		_I64_MIN
-
-#define LUA_MAXUNSIGNED		_UI64_MAX
 
 #else				/* }{ */
 

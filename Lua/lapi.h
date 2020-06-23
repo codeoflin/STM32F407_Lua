@@ -13,8 +13,7 @@
 
 
 /* Increments 'L->top', checking for stack overflows */
-#define api_incr_top(L)   {L->top++; api_check(L, L->top <= L->ci->top, \
-				"stack overflow");}
+#define api_incr_top(L)   {L->top++; api_check(L, L->top <= L->ci->top, "stack overflow");}
 
 
 /*
@@ -22,13 +21,11 @@
 ** stack space to accommodate all results. In this case, this macro
 ** increases its stack space ('L->ci->top').
 */
-#define adjustresults(L,nres) \
-    { if ((nres) <= LUA_MULTRET && L->ci->top < L->top) L->ci->top = L->top; }
+#define adjustresults(L,nres) { if ((nres) <= LUA_MULTRET && L->ci->top < L->top) L->ci->top = L->top; }
 
 
 /* Ensure the stack has at least 'n' elements */
-#define api_checknelems(L,n)	api_check(L, (n) < (L->top - L->ci->func), \
-				  "not enough elements in the stack")
+#define api_checknelems(L,n)	api_check(L, (n) < (L->top - L->ci->func), "not enough elements in the stack")
 
 
 /*
@@ -44,4 +41,10 @@
 
 #define codeNresults(n)		(-(n) - 3)
 
+/*
+** 数字转字符串
+*/
+int Long2Str(char *buff, int bufflen, long long num);
+
+int Double2Str(char *str, double number, unsigned char g, unsigned char l);
 #endif

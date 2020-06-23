@@ -22,7 +22,7 @@ TARGET = Lua407
 # debug build?
 DEBUG = 1
 # optimization
-OPT = -Og
+OPT = #-Og
 
 
 #######################################
@@ -54,7 +54,17 @@ Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c \
+Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_sdmmc.c \
+Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sd.c \
+Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c \
+Middlewares/Third_Party/FatFs/src/diskio.c \
+Middlewares/Third_Party/FatFs/src/ff.c \
+Middlewares/Third_Party/FatFs/src/ff_gen_drv.c \
+Middlewares/Third_Party/FatFs/src/option/syscall.c \
 Src/system_stm32f4xx.c \
+Src/bsp_driver_sd.c \
+Src/sd_diskio.c \
+Src/fatfs.c \
 Lua/lapi.c \
 Lua/lauxlib.c \
 Lua/lbaselib.c \
@@ -86,17 +96,7 @@ Lua/ltm.c \
 Lua/lundump.c \
 Lua/lutf8lib.c \
 Lua/lvm.c \
-Lua/lzio.c \
-Src/bsp_driver_sd.c \
-Src/sd_diskio.c \
-Src/fatfs.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_sdmmc.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sd.c \
-Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c \
-Middlewares/Third_Party/FatFs/src/diskio.c \
-Middlewares/Third_Party/FatFs/src/ff.c \
-Middlewares/Third_Party/FatFs/src/ff_gen_drv.c \
-Middlewares/Third_Party/FatFs/src/option/syscall.c
+Lua/lzio.c
 
 # ASM sources
 ASM_SOURCES =  \
