@@ -96,7 +96,8 @@ Lua/ltm.c \
 Lua/lundump.c \
 Lua/lutf8lib.c \
 Lua/lvm.c \
-Lua/lzio.c
+Lua/lzio.c \
+Lua/lmculib.c
 
 # ASM sources
 ASM_SOURCES =  \

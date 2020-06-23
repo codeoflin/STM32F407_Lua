@@ -161,7 +161,6 @@ static int io_type (lua_State *L) {
   return 1;
 }
 
-
 static int f_tostring (lua_State *L) {
   LStream *p = tolstream(L);
   if (isclosed(p))
@@ -171,7 +170,6 @@ static int f_tostring (lua_State *L) {
   return 1;
 }
 
-
 static FILE *tofile (lua_State *L) {
   LStream *p = tolstream(L);
   if (isclosed(p))
@@ -179,7 +177,6 @@ static FILE *tofile (lua_State *L) {
   lua_assert(p->f);
   return p->f;
 }
-
 
 /*
 ** When creating file handles, always creates a 'closed' file handle

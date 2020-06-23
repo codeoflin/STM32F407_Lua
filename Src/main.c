@@ -66,6 +66,7 @@ static void MX_SDIO_SD_Init(void);
 
 const char lua_test[] = {
     "print(string.format(\"Test %d %d %d %f %f %f Test\",12,0,-34,12.25,0.0,-56.50))\n"
+    "mcu.myfun()\n"
     "function foo()\n"
     "  local i = 0\n"
     "  local sum = 1\n"
