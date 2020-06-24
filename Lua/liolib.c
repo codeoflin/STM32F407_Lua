@@ -491,14 +491,12 @@ static int read_number (lua_State *L, FILE *f) {
   }
 }
 
-
 static int test_eof (lua_State *L, FILE *f) {
   int c = getc(f);
   ungetc(c, f);  /* no-op when c == EOF */
   lua_pushliteral(L, "");
   return (c != EOF);
 }
-
 
 static int read_line (lua_State *L, FILE *f, int chop) {
   luaL_Buffer b;
@@ -784,8 +782,7 @@ static int io_noclose (lua_State *L) {
 }
 
 
-static void createstdfile (lua_State *L, FILE *f, const char *k,
-                           const char *fname) {
+static void createstdfile (lua_State *L, FILE *f, const char *k,const char *fname) {
   LStream *p = newprefile(L);
   p->f = f;
   p->closef = &io_noclose;
